@@ -23,6 +23,10 @@ class UserRepository {
     async save (user:userType):Promise<userType>{
         return await user.save()
     }
+
+    async update(id:string,userData:Partial<userType>):Promise<userType | null>{
+        return await User.findByIdAndUpdate(id,userData,{new:true}).exec()
+    }
 }
 
 export default new UserRepository()

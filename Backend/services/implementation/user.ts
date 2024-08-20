@@ -74,9 +74,23 @@ class UserImplementation {
         await UserRepository.save(userExist as any);
     
         const token = generateToken(userExist.id);
-        const { password: _, ...userWithoutPassword } = userExist.toObject();
+        const { password: _, address: __, ...userWithoutPassword } = userExist.toObject();
     
         return { token, user: userWithoutPassword };
+    }
+
+    async updateUserProfile(id:string ,userData:Partial<userType>):Promise<userType | null>{
+        if(userData.password){
+            userData.password = await hashPassword(userData.password)
+        }
+        const user = await UserRepository.update(id, userData)
+
+        if (!user) {
+            return null;
+        }
+        const{password:_, ...userWithoutPassword} = user.toObject();
+
+        return userWithoutPassword
     }
 }
 export default new UserImplementation()

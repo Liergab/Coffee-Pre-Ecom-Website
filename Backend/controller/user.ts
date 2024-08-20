@@ -14,14 +14,7 @@ export const register = async (req:Request, res:Response, next: NextFunction) =>
 
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
         const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        console.log("Data being passed to UserImplementation.register:", {
-            email,
-            password,
-            firstName,
-            lastName,
-            verificationToken,
-            verificationTokenExpiresAt
-        });
+  
 
         const { token, user } = await UserImplementation.register({
             email:email,
@@ -107,6 +100,39 @@ export const login = async(req:Request,res:Response,next:NextFunction) => {
         if(error.message === 'Please verify your email. A new verification code has been sent to your email.'){
             res.status(403)
         }
+        next(error)
+    }
+}
+
+export const UpdateUserProfile = async (req:Request,res:Response, next:NextFunction) => {
+    try {
+        const {id} = req.params
+        const userId = req.user?.id
+
+        if(userId !== id){
+            res.status(403)
+            throw new Error('You dont have permission to update others profile')
+            return
+        }
+        const user = await UserImplementation.updateUserProfile(id, req.body)
+
+        if(!user){
+            res.status(404)
+            throw new Error('User not found')
+        }
+
+        res.status(200).json(user)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export const currentUser = async (req:Request,res:Response, next:NextFunction) => {
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
         next(error)
     }
 }
