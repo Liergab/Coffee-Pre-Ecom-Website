@@ -17,6 +17,12 @@ const userSchema = new Schema({
     lastName:{
         type     : String
     },
+    role: {
+        type: String,
+        enum: ['user', 'admin', 'vendor'],
+        default: 'user', // Default role
+        required: true,
+    },
     address:{
         street:{
             type : String
