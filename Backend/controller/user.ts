@@ -5,7 +5,7 @@ import { sendVerificationEmail } from "../config/email";
 export const register = async (req:Request, res:Response, next: NextFunction) => {
     try {
       
-        const { email, password, firstName, lastName } = req.body;
+        const { email, password, firstName, lastName, role } = req.body;
         if (!firstName || !lastName || !email || !password) {
             res.status(400)
             throw new Error('All fields Required!')
@@ -21,6 +21,7 @@ export const register = async (req:Request, res:Response, next: NextFunction) =>
             password:password,
             firstName:firstName,
             lastName:lastName,
+            role:role,
             verificationToken,
             verificationTokenExpiresAt,
         });
@@ -111,7 +112,7 @@ export const UpdateUserProfile = async (req:Request,res:Response, next:NextFunct
 
         if(userId !== id){
             res.status(403)
-            throw new Error('You dont have permission to update others profile')
+            throw new Error('Access denied: You do not have permission to update someone else\'s profile.')
             return
         }
         const user = await UserImplementation.updateUserProfile(id, req.body)

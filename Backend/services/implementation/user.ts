@@ -17,8 +17,8 @@ class UserImplementation {
         userData.password = await hashPassword(userData.password!)
         const newUser =  await UserRepository.register(userData)
         const token = generateToken(newUser._id)
-
-        return {token, user:newUser}
+        const{password:_, ...userWithoutPassword} = newUser.toObject()
+        return {token, user:userWithoutPassword}
     }
 
     async verifyEmail(code:string):Promise<userType>{

@@ -17,8 +17,6 @@ export interface userType extends Document  {
 
 }
 
-
-
 type addressType = {
     street?   : string;
     barangay? : string;
@@ -26,4 +24,16 @@ type addressType = {
     municipality? : string;
     province? : string;
     postalCode? :string
+}
+
+
+
+export interface productType extends Document {
+    userId      : string;
+    name        : string;
+    description : string;
+    price       : number;
+    tags        : string[];
+    imageUrl    : string[];
+    stock       : number
 }
