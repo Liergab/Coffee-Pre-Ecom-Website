@@ -44,7 +44,10 @@ export const updateProduct = async(req:Request, res:Response, next:NextFunction)
 
         res.status(200).json(product)
 
-    } catch (error) {
+    } catch (error:any) {
+        if(error.message === 'Access denied: Only owner of this product are authorized to update products.'){
+            res.status(403)
+        }
         next(error)
     }
 }
@@ -62,7 +65,31 @@ export const deleteProduct = async(req:Request, res:Response, next:NextFunction)
 
         res.status(200).json({message:"Product Deleted!"})
 
-    } catch (error) {
+    } catch (error:any) {
+        if(error.message === 'Product not found!'){
+            res.status(404)
+        }
+        if(error.message === 'Access denied: Only owner of this product are authorized to delete products.'){
+            res.status(403)
+        }
+        next(error)
+    }
+}
+
+//public 
+
+export const getProductById = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const {id} = req.params
+        const product = await ProductImplementation.getProductById(id)
+
+        res.status(200).json(product)
+        
+    } catch (error:any) {
+
+        if(error.message === 'Product not found!'){
+            res.status(404)
+        }
         next(error)
     }
 }

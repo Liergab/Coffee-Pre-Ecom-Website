@@ -14,6 +14,16 @@ class ProductImplement {
         return await ProductRepository.find()
     }
 
+    async getProductById(id:string):Promise<productType | null>{
+        const product = await ProductRepository.findById(id)
+
+        if(!product){
+            throw new Error('Product not found!')
+        }
+
+        return product
+    }
+
     async updateProduct(id:string, productData:Partial<productType>, userId:string):Promise<productType | null>{
 
         const updateproduct = await ProductRepository.updateById(id, productData)
