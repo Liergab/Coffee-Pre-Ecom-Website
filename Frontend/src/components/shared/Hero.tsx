@@ -39,7 +39,7 @@ const Hero = () => {
                 <img src={coffeeBeans} alt="" className="w-14 h-14" />
             </div>
             <div className="absolute top-[75%] right-60 transform rotate-45">
-                <img src={coffeeToGo} alt="" className="w-14 h-14" />
+                <img src={coffeeToGo} alt="" className="w-14 h-14 animate-bounce " />
             </div>
             <div className="absolute top-[75%] left-60 ">
                 <img src={coffeeCup} alt="" className="w-14 h-14" />
