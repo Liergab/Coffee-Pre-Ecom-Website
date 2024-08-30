@@ -67,3 +67,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities{
+  .button-login {
+    @apply bg-potters-clay-900  dark:bg-potters-clay-100 dark:hover:bg-potters-clay-300;
+  }
+}
