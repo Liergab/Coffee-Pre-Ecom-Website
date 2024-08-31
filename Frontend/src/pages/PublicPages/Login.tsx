@@ -12,7 +12,7 @@ import { FiEye,FiEyeOff } from "react-icons/fi";
 import { CgSpinner } from "react-icons/cg";
 import { Link, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLoginApi } from '@/services/api/auth'
 
 export type loginFormProps = z.infer<typeof loginSchema> 
@@ -22,10 +22,20 @@ const Login = () => {
     const [backendError, setBackendError] = useState<string | null>()
     const [successMessage, setSuccessMessage] = useState<string |null>()
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const loginMutation = useMutation({
         mutationFn:useLoginApi,
-        onSuccess:() => {
+        onSuccess:(data) => {
             setSuccessMessage('Successfully Login!')
+          
+            setTimeout(() => {
+               if(data.role === "user"){
+                navigate('/')
+               }else if(data.role === "vendor"){
+                navigate("/admin/dashboard")
+               }
+            },3000)
+            queryClient.invalidateQueries({queryKey:['currentUser']})
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError:(error:any) => {

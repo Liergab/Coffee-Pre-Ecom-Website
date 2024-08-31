@@ -69,7 +69,7 @@
 }
 
 @layer utilities{
-  .button-login {
-    @apply bg-potters-clay-900  dark:bg-potters-clay-100 dark:hover:bg-potters-clay-300;
+  .navbar-login-register-link{
+    @apply py-1 px-3 dark:bg-slate-700 bg-slate-400 rounded 
   }
 }

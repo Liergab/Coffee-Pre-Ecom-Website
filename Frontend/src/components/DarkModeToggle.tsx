@@ -12,7 +12,7 @@ const DarkModeToggle: React.FC = () => {
       {isDarkMode ? (
         <div className='p-2 border border-white  rounded  hover:bg-white hover:bg-opacity-35 cursor-pointer transition-all duration-300 ease-in-out' onClick={() => setIsDarkMode(false)}>
             <IoSunnyOutline 
-                className="w-8 h-8 md:w-6 md:h-6 dark:text-white cursor-pointer"
+                className="w-4 h-4 md:w-4 md:h-4 dark:text-white cursor-pointer"
                 onClick={() => setIsDarkMode(false)}
         />
         </div>
@@ -22,7 +22,7 @@ const DarkModeToggle: React.FC = () => {
             onClick={() => setIsDarkMode(true)}
         >
             <RxMoon 
-            className="w-8 h-8 md:w-6 md:h-6 text-black cursor-pointer "
+            className="w-4 h-4 md:w-4 md:h-4 text-black cursor-pointer "
             
             />
         </div>

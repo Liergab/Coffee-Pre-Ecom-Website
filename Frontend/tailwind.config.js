@@ -18,19 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        'potters-clay': {
-          '50': '#f8f5ee',
-          '100': '#eee7d3',
-          '200': '#dfcfa9',
-          '300': '#ccb178',
-          '400': '#bd9552',
-          '500': '#ae8244',
-          '600': '#956739',
-          '700': '#7f5333',
-          '800': '#65422e',
-          '900': '#58382b',
-          '950': '#321d16',
-      },
+        
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -79,10 +67,20 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
     },
   },
