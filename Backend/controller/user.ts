@@ -137,3 +137,8 @@ export const currentUser = async (req:Request,res:Response, next:NextFunction) =
         next(error)
     }
 }
+
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+    res.cookie('auth-token', '', { expires: new Date(0) });
+    res.json(200);
+  };

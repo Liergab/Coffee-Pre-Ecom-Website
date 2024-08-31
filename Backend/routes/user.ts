@@ -5,6 +5,7 @@ const userRouter = express.Router()
 
 userRouter.post('/register',controller.register)
 userRouter.post('/login', controller.login)
+userRouter.get('/logout',controller.logout)
 userRouter.post('/email-verify', controller.verifyEmail)
 userRouter.put('/user/:id',authMiddleware,controller.UpdateUserProfile)
 userRouter.get('/user/current-user', authMiddleware, controller.currentUser)
