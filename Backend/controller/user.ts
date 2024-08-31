@@ -37,7 +37,7 @@ export const register = async (req:Request, res:Response, next: NextFunction) =>
         await sendVerificationEmail(email, verificationToken);
 
         res.status(201).json({
-            message: 'Successfully registered',
+            message: `Successfully registered!\nWe send Verification code to your email!`,
             user
         });
     } catch (error: any) {

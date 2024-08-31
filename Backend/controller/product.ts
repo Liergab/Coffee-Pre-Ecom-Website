@@ -1,16 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import ProductImplementation from '../services/implementation/product'
-
+import cloudinary from 'cloudinary'
 //vendor
 export const createProduct = async(req:Request,res:Response, next:NextFunction) => {
     try {
         const userId = req.user?.id
-        
+        const imageFiles =req.files as Express.Multer.File[]
+        const uploadPromise =imageFiles.map(async(image) =>{
+            const b64 =Buffer.from(image.buffer).toString("base64")
+            let dataUri="data:" + image.mimetype + ";base64," + b64;
+            const res = await cloudinary.v2.uploader.upload(dataUri)
+            return res.url;
+
+        })
+        const imageUrls = await Promise.all(uploadPromise)
         if(req.user?.role !== "vendor"){
             res.status(403)
             throw new Error('Access denied: Only vendors are authorized to create products.')
         }
-        const product = await ProductImplementation.createProduct({...req.body, userId:userId})
+        const product = await ProductImplementation.createProduct({...req.body, userId:userId, imageUrl: imageUrls})
         res.status(200).json({message:"Product Created!", product})
         
     } catch (error:any) {
