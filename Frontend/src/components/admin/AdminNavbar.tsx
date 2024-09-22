@@ -24,7 +24,7 @@ import { useCurrentUserApi, useLogoutApi } from "@/services/api/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
-const Navbar = () => {
+const AdminNavbar = () => {
 
   const navigate= useNavigate()
   const queryClient = useQueryClient()
@@ -54,18 +54,18 @@ const Navbar = () => {
 
             {/* Large Device */}
             <div className=" hidden md:flex items-center md:space-x-4 lg:space-x-8 xl:space-x-10">
-                <Link to='/' className="navbar-link">
-                    <GoHome /> <span className="text-xs xl:text-lg">Home</span>
+                <Link to='/admin/dashboard' className="navbar-link">
+                    <GoHome /> <span className="text-xs xl:text-lg">Dashboard</span>
                 </Link>
-                <Link to='/product' className="navbar-link">
-                    <AiOutlineProduct /> <span className="text-xs xl:text-lg">Product</span>
+                <Link to='/admin/coffee' className="navbar-link">
+                    <AiOutlineProduct /> <span className="text-xs xl:text-lg">Coffee</span>
                 </Link>
                 <Link to='/search' className="navbar-link">
-                    <FiSearch /> <span className="text-xs xl:text-lg">Search</span>
+                    <FiSearch /> <span className="text-xs xl:text-lg">Analytic</span>
                 </Link>
                 {isLoggin && (
                   <Link to='/order' className="navbar-link">
-                      <GoPackage/> <span className="text-xs xl:text-lg">My order</span>
+                      <GoPackage/> <span className="text-xs xl:text-lg">Orders</span>
                   </Link>
 
                 )}
@@ -155,4 +155,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default AdminNavbar

@@ -7,18 +7,23 @@ import Verification from "./pages/PublicPages/Verification"
 import Dashboard from "./pages/AdminPages/Dashboard"
 import AdminProtect from "./layout/AdminProtect"
 import ForbiddenPage from "./pages/PublicPages/ForbiddenPage"
+import Search from "./pages/PublicPages/Search"
+import AdminLayout from "./layout/AdminLayout"
+import Coffee from "./pages/AdminPages/Coffee"
 const App = () => {
   return (
-    <div className=' h-full min-h-screen dark:bg-potters-clay-900 bg-potters-clay-100 '>
+    <div className=' h-full min-h-screen'>
       <div className='container'>
         <Routes>
           <Route path="/" element={<Layout><HomePage/></Layout>}/>
           <Route path='*' element={<Navigate to='/'/>}/>
           <Route path='/login' element={<Layout><Login/></Layout>} />
           <Route path="/register"element={<Layout><Register/></Layout>}/>
+          <Route path="search" element={<Layout><Search/></Layout>} />
           <Route path="/verification"element={<Layout><Verification/></Layout>}/>
           <Route element={<AdminProtect/>}>
-              <Route path="/admin/dashboard" element={<Dashboard/>}/>
+              <Route path="/admin/dashboard" element={<AdminLayout><Dashboard/></AdminLayout>}/>
+              <Route path="/admin/coffee"  element={<AdminLayout><Coffee/></AdminLayout>}/>
           </Route>
           <Route path="/forbidden" element={<ForbiddenPage/>}/>
         </Routes>

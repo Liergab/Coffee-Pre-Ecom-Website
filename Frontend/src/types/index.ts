@@ -26,7 +26,8 @@ type addressType = {
 
 
 
-export interface productType {
+export type productType ={
+    _id          : string;
     userId      : string;
     name        : string;
     description : string;
