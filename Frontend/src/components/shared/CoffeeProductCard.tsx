@@ -19,7 +19,7 @@ const CoffeeProductCard = ({ product }: Props) => {
           <div className="bg-gray-50 p-4 relative">
             <img
               src={Array.isArray(p.imageUrl) ? p.imageUrl[0] || coffee : p.imageUrl || coffee}
-              className="w-full h-auto rounded"
+              className="w-full h-[300px] rounded object-cover object-center"
               alt={p.name}
             />
             <div

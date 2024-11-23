@@ -22,10 +22,13 @@ import {
 import { useAppContext } from "@/context/AppContext";
 import { useCurrentUserApi, useLogoutApi } from "@/services/api/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import EditProfile from "../Form/EditProfile";
 
 
 const AdminNavbar = () => {
-
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [Id, setId] = useState<string>()
   const navigate= useNavigate()
   const queryClient = useQueryClient()
   const logoutMutation = useMutation({
@@ -40,9 +43,18 @@ const AdminNavbar = () => {
   const {data:currentUser, isLoading} = useCurrentUserApi()
   if(isLoading) return
 
+  const handleEditProfile= (pId:string) => {
+    setIsOpen(true)
+    setId(pId)
+  }
+
   const logoutButton = () => {
     logoutMutation.mutateAsync()
   }
+
+  const handleCloseDialog = () => {
+    setIsOpen(false);
+  };
   
   return (
     <div className="py-6 w-full">
@@ -60,7 +72,7 @@ const AdminNavbar = () => {
                 <Link to='/admin/coffee' className="navbar-link">
                     <AiOutlineProduct /> <span className="text-xs xl:text-lg">Coffee</span>
                 </Link>
-                <Link to='/search' className="navbar-link">
+                <Link to='/admin/analytics' className="navbar-link">
                     <FiSearch /> <span className="text-xs xl:text-lg">Analytic</span>
                 </Link>
                 {isLoggin && (
@@ -74,17 +86,42 @@ const AdminNavbar = () => {
                       <FaCartPlus/> <span className="text-xs xl:text-lg">Cart</span>
                   </Link>
                 )}
-                {isLoggin ? (
-                  <p  className="navbar-login-register-link cursor-pointer" onClick={logoutButton}>Logout</p>
-                 
-                ) : (
-                  <>
-                      <Link to='/login' className="navbar-login-register-link">Login</Link>
-                      <Link to='/register' className="navbar-login-register-link">Register</Link>
-                  </>
-                )}
-                
+                 <Menubar className="bg-potters-clay-500">
+                  <MenubarMenu>
+                    <MenubarTrigger className="bg-potters-clay-300"><RxHamburgerMenu/></MenubarTrigger>
+                    <MenubarContent>
+                      {isLoggin && (
+                      <MenubarSub>
+                        <MenubarSubTrigger>Profile</MenubarSubTrigger>
+                        <MenubarSubContent>
+                          <MenubarItem>View</MenubarItem>
+                          <MenubarItem  onClick={() => handleEditProfile(currentUser?._id!)}>Edit</MenubarItem>
+                        {/* <MenubarItem>Notes</MenubarItem>*/} 
+                        </MenubarSubContent>
+                      </MenubarSub>
+                      )}
+                      {isLoggin && <MenubarSeparator />}
+                      {isLoggin && (
+                        <MenubarItem>
+                          {currentUser?.firstName} {currentUser?.lastName}
+                      </MenubarItem>
+                      )}
+                      <MenubarItem className="space-x-4">
+                        {isLoggin ? (
+                            <p className="navbar-login-register-link cursor-pointer" onClick={logoutButton}>Logout</p>
+                          
+                          ) : (
+                            <>
+                                <Link to='/login' className="navbar-login-register-link">Login</Link>
+                                <Link to='/register' className="navbar-login-register-link">Register</Link>
+                            </>
+                          )}
+                      </MenubarItem>
+                    </MenubarContent>
+                  </MenubarMenu>
+                </Menubar>
                 <DarkModeToggle/>
+                <EditProfile isOpen={isOpen} Id={Id!} onClose={handleCloseDialog}/>
             </div>
 
             {/* Small Device */}

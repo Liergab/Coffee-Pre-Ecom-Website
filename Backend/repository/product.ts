@@ -26,6 +26,19 @@ class ProductRepository {
     async deleteById(id:string):Promise<productType | null>{
         return await Product.findByIdAndDelete(id)
     }
+    async searchProduct (query:any, sortOption:any, pageSize:any, pageNumber:any):Promise<{data:productType[], total:number}>{
+        const skip = (pageNumber - 1) * pageSize;
+
+        const products = await Product.find(query)
+            .sort(sortOption)
+            .skip(skip)
+            .limit(pageSize)
+            .exec();
+
+        const total = await Product.countDocuments(query);
+
+        return { data: products, total };
+    }
 
 }
 

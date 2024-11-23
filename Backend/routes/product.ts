@@ -15,7 +15,8 @@ const upload = multer({
 
 productRouter.post('/product', authMiddleware, upload.array('imageFiles', 6), controller.createProduct)
 productRouter.get('/product', controller.getAllProduct)
+productRouter.get('/search', controller.getallProductBySearch)
 productRouter.get('/product/:id', controller.getProductById)
-productRouter.put('/product/:id',authMiddleware, controller.updateProduct)
+productRouter.put('/product/:id',authMiddleware, upload.array('imageFiles', 6),controller.updateProduct)
 productRouter.delete('/product/:id', authMiddleware, controller.deleteProduct)
 export default productRouter

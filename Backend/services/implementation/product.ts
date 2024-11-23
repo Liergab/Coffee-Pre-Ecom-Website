@@ -1,5 +1,6 @@
 import { productType } from "../../types";
 import ProductRepository from '../../repository/product'
+import { constructSearchQuery } from "../../controller/product";
 
 
 
@@ -49,10 +50,30 @@ class ProductImplement {
         }
         const productDeleted = await ProductRepository.deleteById(product.id)
 
-      
-
         return productDeleted
     }
+
+    async searchProducts(queryParams: any, pageSize:number, pageNumber:number) {
+        const query = constructSearchQuery(queryParams);
+
+        let sortOption = {};
+        switch (queryParams.sortOption) {
+            case "starRating":
+                sortOption = { starRating: -1 };
+                break;
+            case "pricePerNightAsc":
+                sortOption = { price: 1 };
+                break;
+            case "pricePerNightDesc":
+                sortOption = { price: -1 };
+                break;
+        }
+
+
+
+        return await ProductRepository.searchProduct(query, sortOption, pageSize, pageNumber);
+    }
+
 }
 
 export default new ProductImplement()

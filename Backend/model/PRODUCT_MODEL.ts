@@ -25,6 +25,14 @@ const productSchema = new Schema<productType>({
     imageUrl:{
         type     : [{type:String, required:true}]
     },
+    starRating:{
+
+        type      : Number,
+        required  : true,
+        min       : 1,
+        max       : 5
+
+    },
     stock:{
         type     : Number,
         required : true,

@@ -26,6 +26,15 @@ type addressType = {
     postalCode? :string
 }
 
+export type ProductSearchResponse = {
+    data:productType[],
+    pagination:{
+        total:number;
+        page:number;
+        pages:number;
+    }
+}
+
 
 
 export interface productType extends Document {
@@ -36,4 +45,5 @@ export interface productType extends Document {
     tags        : string[];
     imageUrl    : string[];
     stock       : number
+    starRating  : number;
 }

@@ -22,10 +22,13 @@ import {
 import { useAppContext } from "@/context/AppContext";
 import { useCurrentUserApi, useLogoutApi } from "@/services/api/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import EditProfile from "../Form/EditProfile";
 
 
 const Navbar = () => {
-
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [Id, setId] = useState<string>()
   const navigate= useNavigate()
   const queryClient = useQueryClient()
   const logoutMutation = useMutation({
@@ -39,6 +42,14 @@ const Navbar = () => {
   const {isLoggin} = useAppContext()
   const {data:currentUser, isLoading} = useCurrentUserApi()
   if(isLoading) return
+
+  const handleEditProfile= (pId:string) => {
+    setIsOpen(true)
+    setId(pId)
+  }
+  const handleCloseDialog = () => {
+    setIsOpen(false);
+  };
 
   const logoutButton = () => {
     logoutMutation.mutateAsync()
@@ -69,24 +80,56 @@ const Navbar = () => {
                   </Link>
 
                 )}
+
                 {isLoggin && (
                   <Link to='/cart' className="navbar-link"> 
                       <FaCartPlus/> <span className="text-xs xl:text-lg">Cart</span>
                   </Link>
                 )}
-                {isLoggin ? (
-                  <p  className="navbar-login-register-link cursor-pointer" onClick={logoutButton}>Logout</p>
-                 
-                ) : (
-                  <>
-                      <Link to='/login' className="navbar-login-register-link">Login</Link>
-                      <Link to='/register' className="navbar-login-register-link">Register</Link>
-                  </>
-                )}
-                
+                <Menubar className="bg-potters-clay-500">
+                  <MenubarMenu>
+                    <MenubarTrigger className="bg-potters-clay-300"><RxHamburgerMenu/></MenubarTrigger>
+                    <MenubarContent>
+                      {isLoggin && (
+                      <MenubarSub>
+                        <MenubarSubTrigger>Profile</MenubarSubTrigger>
+                        <MenubarSubContent>
+                          <MenubarItem>View</MenubarItem>
+                          <MenubarItem  onClick={() => handleEditProfile(currentUser?._id!)}>Edit</MenubarItem>
+                        {/* <MenubarItem>Notes</MenubarItem>*/} 
+                        </MenubarSubContent>
+                      </MenubarSub>
+                      )}
+                      {isLoggin && <MenubarSeparator />}
+                      {isLoggin && (
+                        <MenubarItem>
+                          {currentUser?.firstName} {currentUser?.lastName}
+                      </MenubarItem>
+                      )}
+                      <MenubarItem className="space-x-4">
+                        {isLoggin ? (
+                            <p className="navbar-login-register-link cursor-pointer" onClick={logoutButton}>Logout</p>
+                          
+                          ) : (
+                            <>
+                                <Link to='/login' className="navbar-login-register-link">Login</Link>
+                                <Link to='/register' className="navbar-login-register-link">Register</Link>
+                            </>
+                          )}
+                      </MenubarItem>
+                    </MenubarContent>
+                  </MenubarMenu>
+                </Menubar>
                 <DarkModeToggle/>
-            </div>
+                {isLoggin && 
+                  <div className="flex items-center justify-center rounded-full bg-slate-400 w-12 h-12">
+                    <h1 className="text-white text-xl font-bold">{currentUser?.firstName?.slice(0, 2)}</h1>
+                  </div>
+                }
 
+               <EditProfile isOpen={isOpen} Id={Id!} onClose={handleCloseDialog}/>
+            </div>
+            
             {/* Small Device */}
             <div className="flex items-center space-x-3 md:hidden">
             <DarkModeToggle/>

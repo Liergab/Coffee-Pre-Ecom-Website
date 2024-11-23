@@ -22,3 +22,29 @@ export const verificationSchema = z.object({
         message: "Your one-time password must be 6 characters.",
       }),
 })
+
+export const AddCoffeeSchema = z.object({
+    name: z.string().min(1, { message: 'Name of Coffee is Required!' }),
+    description: z.string().min(1, { message: 'Description is Required!' }),
+    price: z.string(),
+    // z.number().positive({ message: 'Price must be a positive number' }),  
+    stock: z.string(),
+    //z.number().int().nonnegative({ message: 'Stock must be a non-negative integer' }),  
+    tags: z.string() ,
+    imageFiles: z.instanceof(FileList).optional().refine(files => files && files.length > 0, {
+        message: 'At least one image file is required',
+      }),
+})
+
+export const EditCoffeeSchema = z.object({
+    name: z.string().min(1, { message: 'Name of Coffee is Required!' }),
+    description: z.string().min(1, { message: 'Description is Required!' }),
+    price: z.string(),
+    // z.number().positive({ message: 'Price must be a positive number' }),  
+    stock: z.string(),
+    //z.number().int().nonnegative({ message: 'Stock must be a non-negative integer' }),  
+    tags: z.string() ,
+    imageFiles: z.instanceof(FileList).optional().refine(files => files && files.length > 0, {
+        message: 'At least one image file is required',
+      }),
+})

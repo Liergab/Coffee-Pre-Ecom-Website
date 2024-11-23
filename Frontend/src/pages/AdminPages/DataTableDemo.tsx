@@ -33,11 +33,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useGetAllCoffee } from "@/services/api/product"
+import { useDeleteCoffeeProduct, useGetAllCoffee } from "@/services/api/product"
 import { productType } from "@/types"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
+import EditCoffee from "@/components/Form/EditCoffee"
 
 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const columns: ColumnDef<productType>[] = [
   {
     id: "select",
@@ -123,20 +127,21 @@ export const columns: ColumnDef<productType>[] = [
     accessorKey: "imageUrl",
     header: () => <div>Image</div>,
     cell: ({ row }) => {
-      // Get the imageUrl string and parse it as an array
-      const imageUrlString = row.getValue("imageUrl") as string;
-      
-      // Try to parse the string into an array
-      let imageUrlArray: string[] = [];
-      try {
-        imageUrlArray = JSON.parse(imageUrlString);
-      } catch (error) {
-        console.error("Error parsing imageUrl:", error);
-      }
-      
-      // Use the first image from the array if it exists
-      const imageUrl = imageUrlArray.length > 0 ? imageUrlArray[0] : "";
+
+      const imageUrlValue = row.getValue("imageUrl");
   
+      const imageUrlString = typeof imageUrlValue === "string" ? imageUrlValue : "";
+
+      let imageUrlArray: string[] = [];
+      if (imageUrlString) {
+        try {
+          imageUrlArray = JSON.parse(imageUrlString);
+        } catch (error) {
+          console.error("Error parsing imageUrl:", error);
+        }
+      }
+      const imageUrl = imageUrlArray.length > 0 ? imageUrlArray[0] : "";
+
       return imageUrl ? (
         <img src={imageUrl} alt="Product" className="h-10 w-10 object-cover" />
       ) : (
@@ -144,6 +149,8 @@ export const columns: ColumnDef<productType>[] = [
       );
     },
   },
+  
+  
   {
     accessorKey: "_id",
     header: () => <div>ProductID</div>,
@@ -154,8 +161,43 @@ export const columns: ColumnDef<productType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const product = row.original;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [isOpen, setIsOpen] = React.useState<boolean>(false)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [Id, setId] = React.useState<string>()
+
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const queryClient = useQueryClient()
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const deleteCoffeeProduct = useMutation({
+        mutationFn:useDeleteCoffeeProduct,
+        onSuccess:() => {
+          queryClient.invalidateQueries({queryKey:['getAllCoffee']})
+        }
+      })
+      const handleDelete = (coffeeId:string) => {
+        toast.promise(
+          deleteCoffeeProduct.mutateAsync(coffeeId),
+           {
+             loading: 'Deleting...',
+             success: <b>Coffee Product Deleted</b>,
+             error: <b>Could not Delete.</b>,
+           }
+         );
+       
+      }
+
+      const handleViewCoffee = (coffeeId:string) => {
+        setIsOpen(true)
+        setId(coffeeId)
+      }
+
+      const handleCloseDialog = () => {
+        setIsOpen(false);
+      };
 
       return (
+        <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -171,10 +213,12 @@ export const columns: ColumnDef<productType>[] = [
               Copy Product ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Product Details</DropdownMenuItem>
-            <DropdownMenuItem>Delete Product</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleViewCoffee(product._id)}>View Product Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(product._id)}>Delete Product</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+       <EditCoffee isOpen={isOpen} Id={Id!} onClose={handleCloseDialog} />
+        </>
       );
     },
   },
@@ -192,7 +236,7 @@ export function DataTableDemo() {
 
   const {data} = useGetAllCoffee()
  
-  console.log(data)
+
 
   const table = useReactTable({
     data: data ?? [],
@@ -211,7 +255,7 @@ export function DataTableDemo() {
       columnVisibility,
       rowSelection,
     },
-    // Set the initial page size to 5
+
     initialState: {
       pagination: {
         pageSize: 5,
