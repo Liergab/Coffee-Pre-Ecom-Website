@@ -36,3 +36,12 @@ export type productType ={
     imageUrl    : string[];
     stock       : number
 }
+
+export type ProductSearchResponse = {
+    data:productType[],
+    pagination:{
+        total:number;
+        page:number;
+        pages:number;
+    }
+}

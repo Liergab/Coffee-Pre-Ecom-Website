@@ -1,10 +1,17 @@
-import { productType } from '@/types'
+import { ProductSearchResponse, productType } from '@/types'
 import axios from 'axios'
 import {useQuery, UseQueryResult} from '@tanstack/react-query'
-import { EditCoffeeFormData } from '@/components/Form/EditCoffee'
 const BASE_URL ="http://localhost:8080"
 
 
+export type SearchParams = {
+    productname  : string;
+    page?        : string;
+    types?       : string[];
+    stars?       : string;
+    sortOption?  : string;
+    maxPrice?    : string;
+}  
 export const useGetAllCoffee = ():UseQueryResult<productType[]> => {
     return useQuery<productType[]>({
         queryKey:['getAllCoffee'],
@@ -61,3 +68,34 @@ export const useUpdateCoffeeProduct = async({ Id, coffeeData }: { Id: string, co
 
     return response.data;
 };
+
+
+export const useGetSearchProduct =  (searchParams: SearchParams):UseQueryResult<ProductSearchResponse> => {
+    const queryParams = new URLSearchParams();
+    queryParams.append("productname", searchParams.productname || "");
+    queryParams.append("page", searchParams.page || "");
+    queryParams.append("maxPrice", searchParams.maxPrice || "");
+    queryParams.append("sortOption", searchParams.sortOption || "");
+   
+
+    if (searchParams.stars) {
+        if (searchParams.stars.length === 0) {
+          queryParams.append('stars', ''); 
+        } else {
+          searchParams.stars.forEach(star => queryParams.append('stars', star.toString()));
+        }
+      }
+
+    if (searchParams.types) {
+        searchParams.types.forEach(type => queryParams.append("types", type.toString()));
+    }
+    return useQuery({
+        queryKey: ['searchRoom', searchParams],
+        queryFn: async (): Promise<ProductSearchResponse> => {
+            const response = await axios.get(`${BASE_URL}/v1/api/search?${queryParams}`, {
+                withCredentials: true
+            });
+            return response.data;
+        }
+    });
+}

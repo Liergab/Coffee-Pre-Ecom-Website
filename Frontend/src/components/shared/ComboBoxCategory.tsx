@@ -19,16 +19,28 @@ import {
 
 const frameworks = [
   {
-    value: "priceAsc",
-    label: "High Price",
+    value: "100",
+    label: "100",
   },
   {
-    value: "priceDes",
-    label: "Low Price",
+    value: "200",
+    label: "200",
   },
   {
-    value: "latest",
-    label: "Latest Coffee",
+    value: "300",
+    label: "300",
+  },
+  {
+    value: "400",
+    label: "400",
+  },
+  {
+    value: "500",
+    label: "500",
+  },
+  {
+    value: "1000",
+    label: "1000",
   }
 ]
 
