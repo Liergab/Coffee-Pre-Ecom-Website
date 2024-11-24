@@ -61,11 +61,11 @@ class ProductImplement {
             case "starRating":
                 sortOption = { starRating: -1 };
                 break;
-            case "pricePerNightAsc":
-                sortOption = { price: 1 };
-                break;
-            case "pricePerNightDesc":
+            case "priceAsc":
                 sortOption = { price: -1 };
+                break;
+            case "priceDes":
+                sortOption = { price: 1 };
                 break;
         }
 
