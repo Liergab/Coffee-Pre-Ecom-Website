@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ComboBoxCategory from '@/components/shared/ComboBoxCategory'
 import ComboBoxSort from '@/components/shared/ComboBoxSort'
 import ComboBoxStarRating from '@/components/shared/ComboBoxStarRating'
@@ -6,6 +7,7 @@ import { useGetSearchProduct } from '@/services/api/product'
 import React, { useCallback, useState } from 'react'
 import { debounce } from 'lodash' 
 import CoffeeProductCard from '@/components/shared/CoffeeProductCard'
+import Pagination from '@/components/shared/Pagination'
 
 const Search = () => {
   const [page, setPage] = useState<number>(1)
@@ -54,6 +56,12 @@ const Search = () => {
       ) : (
         <div className="mt-10 text-center text-gray-500">No data found</div>
       )}
+
+      <div className='mt-10'>
+            {data?.pagination?.total  === 0 ? ' ' : <>
+              <Pagination page={data?.pagination.page || 1}  pages={data?.pagination.pages || 1} onPageChange={(page) => setPage(page)}/>
+            </>}
+      </div>
     </section>
   )
 }

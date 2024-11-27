@@ -120,7 +120,7 @@ export const getProductById = async (req:Request, res:Response, next:NextFunctio
 
 export const getallProductBySearch = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const pageSize = 5
+        const pageSize = 6
         const pageNumber = parseInt(
             req.query.page ? req.query.page.toString() : "1"
         )
