@@ -23,6 +23,7 @@ const Search = () => {
   )
 
   console.log(test)
+  console.log(test)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     SetProductname(value)
@@ -37,7 +38,7 @@ const Search = () => {
 
   } 
   const {data, isLoading} = useGetSearchProduct(searchParams)
-
+   console.log(data)
   return (
     <section>
       <div className='w-full border border-white py-4 px-4 rounded-lg  flex'>
