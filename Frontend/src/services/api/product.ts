@@ -25,7 +25,7 @@ export const useGetAllCoffee = ():UseQueryResult<productType[]> => {
     })
 }
 
-export const useCreateCoffeeProduct = async(coffeeData:FormData) => {
+export const createCoffeeProduct = async(coffeeData:FormData) => {
     const response = await axios.post(`${BASE_URL}/v1/api/product`, coffeeData,{
         headers:{
             'content-type':'multipart/form-data'
