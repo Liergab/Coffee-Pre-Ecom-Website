@@ -26,14 +26,16 @@ export const verificationSchema = z.object({
 export const AddCoffeeSchema = z.object({
     name: z.string().min(1, { message: 'Name of Coffee is Required!' }),
     description: z.string().min(1, { message: 'Description is Required!' }),
-    price: z.string(),
-    // z.number().positive({ message: 'Price must be a positive number' }),  
-    stock: z.string(),
-    //z.number().int().nonnegative({ message: 'Stock must be a non-negative integer' }),  
-    tags: z.string() ,
-    imageFiles: z.instanceof(FileList).optional().refine(files => files && files.length > 0, {
-        message: 'At least one image file is required',
-      }),
+    price: z.number()
+        .min(0, { message: 'Price must be a non-negative number' })
+        .or(z.string().regex(/^\d+$/, { message: 'Price must be a valid number' })),
+    stock: z.number()
+        .min(0, { message: 'Stock must be a non-negative number' })
+        .or(z.string().regex(/^\d+$/, { message: 'Stock must be a valid number' })),
+    tags: z.string().min(1, { message: 'At least one tag is required' }),
+    images: z.array(z.instanceof(File))
+        .min(1, { message: 'At least one image is required' })
+        .max(6, { message: 'Maximum 6 images allowed' }),
 })
 
 export const EditCoffeeSchema = z.object({
