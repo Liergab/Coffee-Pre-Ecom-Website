@@ -162,13 +162,25 @@ const EditCoffee = ({ isOpen, Id, onClose }: EditCoffeeProps) => {
     );
   };
 
+  const handleClose = () => {
+    // Clean up any blob URLs
+    cleanupObjectUrls(selectedImages);
+    // Reset form state
+    reset();
+    // Reset image states
+    setSelectedImages([]);
+    setNewImageFiles(null);
+    // Call the parent's onClose
+    onClose();
+  };
+
   if (coffeeByIdLoading) {
     return <div className="flex items-center justify-center p-4">Loading...</div>;
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-w-[80vw]">
         <DialogHeader>
           <DialogTitle>Edit Coffee Product</DialogTitle>
           <DialogDescription>
@@ -176,102 +188,110 @@ const EditCoffee = ({ isOpen, Id, onClose }: EditCoffeeProps) => {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input {...register("name")} className={errors.name ? "border-red-500" : ""} />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <Label htmlFor="description">Description</Label>
-            <Input {...register("description")} className={errors.description ? "border-red-500" : ""} />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <Label htmlFor="tags">Tags</Label>
-            <Input 
-              {...register("tags")} 
-              placeholder="Enter tags separated by commas" 
-              className={errors.tags ? "border-red-500" : ""} 
-            />
-            {errors.tags && (
-              <p className="text-red-500 text-sm mt-1">{errors.tags.message}</p>
-            )}
-            <p className="text-sm text-gray-500 mt-1">Example: coffee, arabica, hot</p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="price">Price</Label>
-              <Input 
-                type="number" 
-                min="0"
-                step="0.01"
-                {...register("price", { 
-                  valueAsNumber: true,
-                  setValueAs: v => v === "" ? undefined : parseFloat(v)
-                })} 
-                className={errors.price ? "border-red-500" : ""} 
-              />
-              {errors.price && (
-                <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="stock">Stocks</Label>
-              <Input 
-                type="number"
-                min="0"
-                step="1"
-                {...register("stock", { 
-                  valueAsNumber: true,
-                  setValueAs: v => v === "" ? undefined : parseInt(v)
-                })} 
-                className={errors.stock ? "border-red-500" : ""} 
-              />
-              {errors.stock && (
-                <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Images</Label>
-            <FileUpload
-              onChange={handleImageChange}
-              value={newImageFiles ? Array.from(newImageFiles) : undefined}
-              className="w-full"
-            />
-          </div>
-
-          {selectedImages.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-4">
-              {selectedImages.map((image, index) => (
-                <div key={index} className="relative group">
-                  <img 
-                    src={image}
-                    alt={`Selected ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-md"
+          <div className="grid grid-cols-2 gap-8">
+            {/* Left Column - Form Fields */}
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="name">Name</Label>
+                <Input {...register("name")} className={errors.name ? "border-red-500" : ""} />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                )}
+              </div>
+              
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Input {...register("description")} className={errors.description ? "border-red-500" : ""} />
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                )}
+              </div>
+              
+              <div>
+                <Label htmlFor="tags">Tags</Label>
+                <Input 
+                  {...register("tags")} 
+                  placeholder="Enter tags separated by commas" 
+                  className={errors.tags ? "border-red-500" : ""} 
+                />
+                {errors.tags && (
+                  <p className="text-red-500 text-sm mt-1">{errors.tags.message}</p>
+                )}
+                <p className="text-sm text-gray-500 mt-1">Example: coffee, arabica, hot</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="price">Price</Label>
+                  <Input 
+                    type="number" 
+                    min="0"
+                    step="0.01"
+                    {...register("price", { 
+                      valueAsNumber: true,
+                      setValueAs: v => v === "" ? undefined : parseFloat(v)
+                    })} 
+                    className={errors.price ? "border-red-500" : ""} 
                   />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 
-                             opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    ×
-                  </button>
+                  {errors.price && (
+                    <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+                  )}
                 </div>
-              ))}
+                <div>
+                  <Label htmlFor="stock">Stocks</Label>
+                  <Input 
+                    type="number"
+                    min="0"
+                    step="1"
+                    {...register("stock", { 
+                      valueAsNumber: true,
+                      setValueAs: v => v === "" ? undefined : parseInt(v)
+                    })} 
+                    className={errors.stock ? "border-red-500" : ""} 
+                  />
+                  {errors.stock && (
+                    <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
+                  )}
+                </div>
+              </div>
             </div>
-          )}
 
-          <Button type="submit" className="w-full">Save changes</Button>
+            {/* Right Column - Image Upload and Preview */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Images</Label>
+                <FileUpload
+                  onChange={handleImageChange}
+                  value={newImageFiles ? Array.from(newImageFiles) : undefined}
+                  className="w-full"
+                />
+              </div>
+
+              {selectedImages.length > 0 && (
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  {selectedImages.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img 
+                        src={image}
+                        alt={`Selected ${index + 1}`}
+                        className="w-20 h-20 object-cover rounded-md"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 
+                                 opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full mt-6">Save changes</Button>
         </form>
       </DialogContent>
     </Dialog>
