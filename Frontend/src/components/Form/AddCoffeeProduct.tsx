@@ -43,6 +43,7 @@ const AddCoffeeProduct = () => {
       setDialogOpen(false);
       toast.success('Coffee product added successfully!');
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       const errorMessage = error?.message || 'Error adding coffee product!';
       toast.error(errorMessage);
@@ -120,6 +121,7 @@ const AddCoffeeProduct = () => {
       console.log('Submitting to API...');
       await createProduct.mutateAsync(formData);
       console.log('API submission successful');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('API Error:', error);
       const errorMessage = error?.response?.data?.message || 'Failed to save product';
