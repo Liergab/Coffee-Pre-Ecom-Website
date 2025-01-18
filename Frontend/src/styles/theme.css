@@ -1,0 +1,121 @@
+.dialog-content input[type="text"],
+.dialog-content input[type="number"],
+.dialog-content textarea {
+  @apply bg-[#2c2c2c] dark:bg-[#333333] text-white;
+}/* Light mode */
+:root {
+  /* Background colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #faf7ec;
+  --color-bg-tertiary: #f3ebce;
+  --color-bg-card: #ffffff;
+  --color-bg-card-hover: #faf7ec;
+  
+  /* Text colors */
+  --color-text-primary: #371d11;
+  --color-text-secondary: #845024;
+  --color-text-tertiary: #a46c2a;
+  
+  /* Border colors */
+  --color-border-light: #e8d5a0;
+  --color-border-default: #dab96a;
+}
+
+/* Dark mode */
+.dark {
+  /* Background colors */
+  --color-bg-primary: #371d11;
+  --color-bg-secondary: #5f3824;
+  --color-bg-tertiary: #6e4225;
+  --color-bg-card: #5f3824;
+  --color-bg-card-hover: #6e4225;
+  
+  /* Text colors */
+  --color-text-primary: #faf7ec;
+  --color-text-secondary: #e8d5a0;
+  --color-text-tertiary: #dab96a;
+  
+  /* Border colors */
+  --color-border-light: #845024;
+  --color-border-default: #a46c2a;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 24 96% 44%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 24 96% 44%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 24 96% 44%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 96% 44%;
+  }
+}
+
+/* ShadCN Component Styles */
+.dropdown-menu {
+  @apply bg-card dark:bg-card;
+}
+
+.context-menu {
+  @apply bg-card dark:bg-card;
+}
+
+.dialog-content {
+  @apply bg-card dark:bg-card;
+}
+
+.popover-content {
+  @apply bg-card dark:bg-card;
+}
+
+.tooltip-content {
+  @apply bg-card dark:bg-card;
+}
+
+.command-menu {
+  @apply bg-card dark:bg-card;
+}
+
+.select-content {
+  @apply bg-card dark:bg-card;
+}
+
+.navigation-menu {
+  @apply bg-card dark:bg-card;
+}

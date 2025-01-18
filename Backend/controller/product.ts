@@ -41,12 +41,13 @@ export const updateProduct = async(req: Request, res: Response, next: NextFuncti
     try {
         const { id } = req.params;
         const userId = req.user?.id;
+        const existingImages = req.body.existingImages || [];
 
         // Check if files were uploaded
         const imageFiles = req.files as Express.Multer.File[];
 
-        // If no files are uploaded, skip the file processing
-        let imageUrls: string[] = [];
+        // Process new images if any were uploaded
+        let newImageUrls: string[] = [];
         if (imageFiles && imageFiles.length > 0) {
             const uploadPromise = imageFiles.map(async (image) => {
                 const b64 = Buffer.from(image.buffer).toString("base64");
@@ -54,7 +55,7 @@ export const updateProduct = async(req: Request, res: Response, next: NextFuncti
                 const res = await cloudinary.v2.uploader.upload(dataUri);
                 return res.url;
             });
-            imageUrls = await Promise.all(uploadPromise);
+            newImageUrls = await Promise.all(uploadPromise);
         }
 
         if (req.user?.role !== "vendor") {
@@ -62,8 +63,21 @@ export const updateProduct = async(req: Request, res: Response, next: NextFuncti
             throw new Error('Access denied: Only vendors are authorized to update products.');
         }
 
-        // Update the product with the provided data and image URLs (if any)
-        const product = await ProductImplementation.updateProduct(id, { ...req.body, imageUrl: imageUrls }, userId);
+        // Combine existing and new image URLs
+        let finalImageUrls = Array.isArray(existingImages) ? existingImages : [];
+        if (newImageUrls.length > 0) {
+            finalImageUrls = [...finalImageUrls, ...newImageUrls];
+        }
+
+        // Update the product with all images
+        const product = await ProductImplementation.updateProduct(
+            id, 
+            { 
+                ...req.body,
+                imageUrl: finalImageUrls.length > 0 ? finalImageUrls : undefined 
+            }, 
+            userId
+        );
 
         res.status(200).json(product);
 
@@ -74,7 +88,6 @@ export const updateProduct = async(req: Request, res: Response, next: NextFuncti
         next(error);
     }
 };
-
 
 //vender
 export const deleteProduct = async(req:Request, res:Response, next:NextFunction) => {

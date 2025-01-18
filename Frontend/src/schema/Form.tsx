@@ -37,14 +37,24 @@ export const AddCoffeeSchema = z.object({
 })
 
 export const EditCoffeeSchema = z.object({
-    name: z.string().min(1, { message: 'Name of Coffee is Required!' }),
-    description: z.string().min(1, { message: 'Description is Required!' }),
-    price: z.string(),
-    // z.number().positive({ message: 'Price must be a positive number' }),  
-    stock: z.string(),
-    //z.number().int().nonnegative({ message: 'Stock must be a non-negative integer' }),  
-    tags: z.string() ,
-    imageFiles: z.instanceof(FileList).optional().refine(files => files && files.length > 0, {
-        message: 'At least one image file is required',
-      }),
+    name: z.string().min(1, { message: 'Name of Coffee is Required!' })
+        .max(50, { message: 'Name must be less than 50 characters' }),
+    description: z.string()
+        .min(1, { message: 'Description is Required!' })
+        .max(500, { message: 'Description must be less than 500 characters' }),
+    price: z.number()
+        .min(0, { message: 'Price must be a positive number' })
+        .or(z.string().regex(/^\d+$/, { message: 'Price must be a valid number' })),
+    stock: z.number()
+        .min(0, { message: 'Stock must be a non-negative number' })
+        .or(z.string().regex(/^\d+$/, { message: 'Stock must be a valid number' })),
+    tags: z.string()
+        .transform(val => val.split(',').map(tag => tag.trim()))
+        .or(z.array(z.string())),
+    imageFiles: z.instanceof(FileList)
+        .optional()
+        .refine(files => !files || files.length === 0 || Array.from(files).every(file => 
+            file.type.startsWith('image/')), {
+            message: 'All files must be images',
+        })
 })
