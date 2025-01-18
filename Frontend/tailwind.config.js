@@ -17,8 +17,25 @@ module.exports = {
       },
     },
     extend: {
+      borderRadius: {
+        lg: "0.5rem",
+        md: "calc(0.5rem - 2px)",
+        sm: "calc(0.5rem - 4px)",
+      },
       colors: {
-        
+        geebung: {
+          '50': '#faf7ec',
+          '100': '#f3ebce',
+          '200': '#e8d5a0',
+          '300': '#dab96a',
+          '400': '#ce9f41',
+          '500': '#c99136',
+          '600': '#a46c2a',
+          '700': '#845024',
+          '800': '#6e4225',
+          '900': '#5f3824',
+          '950': '#371d11',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -53,10 +70,13 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      backgroundColor: {
+        primary: 'var(--color-bg-primary)',
+        secondary: 'var(--color-bg-secondary)',
+      },
+      textColor: {
+        primary: 'var(--color-text-primary)',
+        secondary: 'var(--color-text-secondary)',
       },
       keyframes: {
         "accordion-down": {
@@ -81,7 +101,6 @@ module.exports = {
         },
       },
       animation: {
-       
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         marquee: "marquee var(--duration) linear infinite",
