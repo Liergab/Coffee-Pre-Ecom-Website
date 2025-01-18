@@ -28,7 +28,6 @@ const productSchema = new Schema<productType>({
     starRating:{
 
         type      : Number,
-        required  : true,
         min       : 1,
         max       : 5
 
