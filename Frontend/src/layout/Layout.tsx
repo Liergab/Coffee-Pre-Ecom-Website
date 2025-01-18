@@ -15,7 +15,7 @@ const Layout = ({children}:Props) => {
         <div className='min-h-screen flex flex-col'>
             <Navbar/> 
             {ShowHero && <Hero/>}
-            <div className=' flex-1 h-full'>
+            <div className='flex-1 h-full'>
                 {children}
             </div>
             <Footer/>
