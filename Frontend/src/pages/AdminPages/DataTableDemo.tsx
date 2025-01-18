@@ -112,10 +112,14 @@ export const columns: ColumnDef<productType>[] = [
     header: () => <div>Tags</div>,
     cell: ({ row }) => {
       const tags = row.getValue("tags") as string[];
+      const rowId = row.original._id; // Get the row ID to make keys unique
       return (
         <div>
-          {tags.map((tag) => (
-            <span key={tag} className="mr-1 px-2 py-1 bg-gray-200 dark:bg-slate-900 rounded-md">
+          {tags.map((tag, index) => (
+            <span 
+              key={`${rowId}-${tag}-${index}`} 
+              className="mr-1 px-2 py-1 bg-gray-200 dark:bg-slate-900 rounded-md"
+            >
               {tag}
             </span>
           ))}
