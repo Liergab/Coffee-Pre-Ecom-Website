@@ -22,8 +22,6 @@ const Search = () => {
     []
   )
 
-  console.log(test)
-  console.log(test)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     SetProductname(value)
